@@ -1,0 +1,35 @@
+info:
+  name: POST
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{HOST}}/task"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "te",
+        "description": "t"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("should return task nr.1", function () {
+          expect(res.getStatus()).to.equal(201);
+          
+          const body = res.getBody();
+          expect(body).to.have.property("id");
+          expect(body.name).to.equal("test");
+          expect(body.description).to.equal("test post a task");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

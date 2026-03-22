@@ -16,8 +16,9 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.taskService.create(createTaskDto);
+  async create(@Body() createTaskDto: CreateTaskDto) {
+    const createdTask = await this.taskService.create(createTaskDto);
+    return createdTask;
   }
 
   @Get()
@@ -27,6 +28,7 @@ export class TaskController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    // saoetu
     return this.taskService.findOne(+id);
   }
 

@@ -1,0 +1,28 @@
+info:
+  name: GET_one
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{HOST}}/task/1"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("should return task nr.1", function () {
+          expect(res.getStatus()).to.equal(200);
+          
+          const body = res.getBody();
+          expect(body).to.have.property("id");
+          expect(body.name).to.equal("buy");
+          expect(body.description).to.equal("to buy a house");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
