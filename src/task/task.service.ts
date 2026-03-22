@@ -7,7 +7,9 @@ import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectRepository(Task) private readonly taskRepository: Repository<Task>) {}
+  constructor(
+    @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
+  ) {}
   create(createTaskDto: CreateTaskDto) {
     return 'This action adds a new task';
   }
