@@ -1,5 +1,5 @@
 info:
-  name: POST
+  name: POST_create
   type: http
   seq: 2
 
@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "name": "te",
-        "description": "t"
+        "name": "test",
+        "description": "test bruno post req"
       }
   auth: inherit
 
@@ -24,8 +24,9 @@ runtime:
           
           const body = res.getBody();
           expect(body).to.have.property("id");
+          bru.setEnvVar("TASK_ID", body.id);
           expect(body.name).to.equal("test");
-          expect(body.description).to.equal("test post a task");
+          expect(body.description).to.equal("test bruno post req");
         });
 
 settings:

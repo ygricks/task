@@ -1,0 +1,31 @@
+info:
+  name: PATCH_change
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{HOST}}/task/{{TASK_ID}}"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "test changed"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("should chenge the name", function () {
+          expect(res.getStatus()).to.equal(200);
+          const body = res.getBody();
+          expect(body.name).to.equal("test changed");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

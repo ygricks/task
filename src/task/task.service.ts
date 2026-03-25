@@ -10,19 +10,13 @@ export class TaskService {
   constructor(
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
   ) {}
+
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     this.taskRepository.create(createTaskDto);
     return await this.taskRepository.save(createTaskDto);
   }
 
-  findAll() {
-    return `This action returns all task`;
-  }
-
-  async findOne(id: number): Promise<Task | null> {
-    if (!id) {
-      throw new NotFoundException('Task not found');
-    }
+  async findOne(id: number): Promise<Task> {
     const task = await this.taskRepository.findOneBy({ id });
     if (!task) {
       throw new NotFoundException('Task not found');
@@ -30,11 +24,21 @@ export class TaskService {
     return task;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async update(id: number, dto: UpdateTaskDto): Promise<Task> {
+    const task = await this.taskRepository.preload({
+      id,
+      ...dto,
+    });
+
+    if (!task) {
+      throw new NotFoundException(`Task not found`);
+    }
+
+    return await this.taskRepository.save(task);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async remove(id: number): Promise<{ removed: boolean }> {
+    const deleteResult = await this.taskRepository.delete({ id });
+    return { removed: Boolean(deleteResult.affected) };
   }
 }
