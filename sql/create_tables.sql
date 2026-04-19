@@ -6,7 +6,7 @@ CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(200) NOT NULL,
+    password VARCHAR(100) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -27,7 +27,8 @@ CREATE TABLE tasks (
 -- --------------
 
 INSERT INTO users(name, email, password) VALUES
-('admin','admin@example.com', '123');
+('admin','admin@example.com', '$2b$10$022aWTKzOxxC82E22qWRLOslzm5/E.KAMZhBGybxk4uY5AYhk/fsK');
+-- 123
 
 INSERT INTO tasks(created_by, name, description) VALUES
 (1, 'buy', 'to buy a house'),

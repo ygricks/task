@@ -5,14 +5,14 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 20, unique: true })
+  @Column({ length: 50, nullable: false })
   name: string;
 
-  @Column({ length: 100})
-  password: string;
+  @Column({ length: 100, nullable: false, unique: true })
+  email: string;
 
-  @Column({ type: 'boolean' })
-  status: boolean;
+  @Column({ length: 100, nullable: false })
+  password: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
