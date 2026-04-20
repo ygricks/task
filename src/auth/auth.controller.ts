@@ -5,7 +5,8 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Request,
+  Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
@@ -17,13 +18,23 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  async signIn(@Body() signInDto: Record<string, any>, @Res() res) {
+    const data = await this.authService.signIn(
+      signInDto.username,
+      signInDto.password,
+    );
+    res.cookie('jwt', data.jwt, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/api',
+    });
+    return res.send({ payload: data.payload });
   }
 
   @UseGuards(AuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
+  getProfile(@Req() req) {
     return req.user;
   }
 }

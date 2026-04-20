@@ -1,4 +1,4 @@
 name: LOCAL_TASK
 variables:
   - name: HOST
-    value: http://127.0.0.1:3000
+    value: https://127.0.0.1:3000/api

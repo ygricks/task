@@ -16,10 +16,10 @@ export class UsersService {
     return this.userRepository.findOne({ where: { name: username } });
   }
 
-  hashPassword(password: string): string {
-    const saltOrRounds = this.configService.getOrThrow<string>('BCRYPT_SALT');
-    return hashSync(password, parseInt(saltOrRounds, 10));
-  }
+  // private hashPassword(password: string): string {
+  //   const saltOrRounds = this.configService.getOrThrow<string>('BCRYPT_SALT');
+  //   return hashSync(password, parseInt(saltOrRounds, 10));
+  // }
 
   validatePassword(password: string, hash: string): boolean {
     const isMatch = compareSync(password, hash);
