@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
+import { AuthGuard } from './auth.guard';
+import { StringValue } from 'ms';
 
 @Module({
   imports: [
@@ -14,13 +16,15 @@ import { AuthController } from './auth.controller';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         global: true,
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '2d' },
+        secret: configService.getOrThrow<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.getOrThrow<StringValue>('JWT_EXPIRES_IN'),
+        },
       }),
     }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule, AuthGuard],
 })
 export class AuthModule {}

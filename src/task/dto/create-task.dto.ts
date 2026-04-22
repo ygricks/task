@@ -12,12 +12,12 @@ export class CreateTaskDto {
   @IsString()
   @MaxLength(500)
   @MinLength(3)
-  name: string;
+  name!: string;
 
   @IsString()
   @MaxLength(1000)
   @MinLength(3)
-  description: string;
+  description!: string;
 
   @IsNumber()
   @Type(() => Number)

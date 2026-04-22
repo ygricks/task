@@ -11,9 +11,9 @@ export class TaskService {
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
   ) {}
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
-    this.taskRepository.create(createTaskDto);
-    return await this.taskRepository.save(createTaskDto);
+  async create(task: Partial<Task>): Promise<Task> {
+    this.taskRepository.create(task);
+    return this.taskRepository.save(task);
   }
 
   async findOne(id: number): Promise<Task> {
@@ -21,7 +21,7 @@ export class TaskService {
     if (!task) {
       throw new NotFoundException('Task not found');
     }
-    return task;
+    return Promise.resolve(task);
   }
 
   async update(id: number, dto: UpdateTaskDto): Promise<Task> {
@@ -31,7 +31,7 @@ export class TaskService {
     });
 
     if (!task) {
-      throw new NotFoundException(`Task not found`);
+      throw new NotFoundException('Task not found');
     }
 
     return await this.taskRepository.save(task);

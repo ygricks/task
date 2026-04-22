@@ -13,8 +13,11 @@ runtime:
     - type: tests
       code: |-
         test("should remove created task", function () {
-          expect(res.getStatus()).to.equal(200);
-          bru.deleteEnvVar("TASK_ID");
+          const status = res.getStatus();
+          expect(status).to.equal(200);
+          if(status == 200) {
+            bru.deleteEnvVar("TASK_ID");
+          }
         });
 
 settings:

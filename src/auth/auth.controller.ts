@@ -7,15 +7,15 @@ import {
   Post,
   Req,
   Res,
-  UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { Public } from './public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Body() signInDto: Record<string, any>, @Res() res) {
@@ -32,7 +32,6 @@ export class AuthController {
     return res.send({ payload: data.payload });
   }
 
-  @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Req() req) {
     return req.user;
