@@ -1,0 +1,1 @@
+export const DOUBLE_CSRF_TOKEN = 'DOUBLE_CSRF_TOKEN';

@@ -6,6 +6,9 @@ info:
 http:
   method: PATCH
   url: "{{HOST}}/task/{{TASK_ID}}"
+  headers:
+    - name: x-csrf-token
+      value: "{{csrfToken}}"
   body:
     type: json
     data: |-

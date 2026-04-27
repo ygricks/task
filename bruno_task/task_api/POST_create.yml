@@ -6,6 +6,9 @@ info:
 http:
   method: POST
   url: "{{HOST}}/task"
+  headers:
+    - name: x-csrf-token
+      value: "{{csrfToken}}"
   body:
     type: json
     data: |-

@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import cookieParser = require('cookie-parser');
+import { DOUBLE_CSRF_TOKEN } from './auth/constants';
 
 async function bootstrap() {
   const httpsOptions = {
@@ -23,6 +24,9 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  const { doubleCsrfProtection } = app.get(DOUBLE_CSRF_TOKEN);
+  app.use(doubleCsrfProtection);
 
   await app.listen(process.env.PORT ?? 3000);
 }

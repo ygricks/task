@@ -1,21 +1,14 @@
 info:
-  name: login
+  name: csrf
   type: http
-  seq: 2
+  seq: 1
 
 http:
-  method: POST
-  url: "{{HOST}}/auth/login"
+  method: GET
+  url: "{{HOST}}/auth/csrf-token"
   headers:
     - name: x-csrf-token
       value: "{{csrfToken}}"
-  body:
-    type: json
-    data: |-
-      {
-        "username": "admin",
-        "password": "123"
-      }
   auth: inherit
 
 runtime:
