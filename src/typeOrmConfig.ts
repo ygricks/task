@@ -8,12 +8,12 @@ export function TypeOrmConfigFactory(
 ): TypeOrmModuleOptions {
   return {
     type: 'postgres',
-    host: config.get<string>('DB_HOST'),
-    port: +config.get<number>('DB_PORT', 5432),
-    username: config.get<string>('DB_USER'),
-    password: config.get<string>('DB_PASSWORD'),
-    database: config.get<string>('DB_DB'),
+    host: config.getOrThrow<string>('DB_HOST'),
+    port: +config.getOrThrow<number>('DB_PORT', 5432),
+    username: config.getOrThrow<string>('DB_USER'),
+    password: config.getOrThrow<string>('DB_PASSWORD'),
+    database: config.getOrThrow<string>('DB_DB'),
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: config.get<string>('NODE_ENV') !== 'production',
+    synchronize: config.getOrThrow<string>('NODE_ENV') !== 'production',
   };
 }
