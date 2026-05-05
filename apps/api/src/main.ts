@@ -28,6 +28,8 @@ async function bootstrap() {
   const { doubleCsrfProtection } = app.get(DOUBLE_CSRF_TOKEN);
   app.use(doubleCsrfProtection);
 
+  const port: number = parseInt(process.env.PORT ?? '3000', 10);
+  console.log(`Server is running on port ${port}`);
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
