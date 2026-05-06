@@ -6,9 +6,10 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { ITask } from '@my-project/types';
 
 @Entity('tasks')
-export class Task {
+export class Task implements ITask {
   @PrimaryGeneratedColumn()
   id!: number;
 
