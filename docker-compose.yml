@@ -1,21 +1,32 @@
 services:
-  app:
-    container_name: task-app
+  api:
     build:
-      context: .
-      dockerfile: Dockerfile
-    env_file:
-      - .env
+      context: . # Now pointing to the monorepo root
+      dockerfile: ./apps/api/Dockerfile
+    env_file: .env
+    # environment:
+    #   - NODE_ENV=production
     ports:
       - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
+      # Ignore local node_modules in subfolders to prevent host/container conflicts
+      - /app/apps/api/node_modules
+      - /app/packages/types/node_modules
     depends_on:
       - db
+
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile # Assuming your FE is here
+    ports:
+      - "5173:5173"
   db:
     image: postgres:18-alpine
     container_name: task-db
+    env_file: .env
     hostname: db
     environment:
       - POSTGRES_USER=${DB_USER}
