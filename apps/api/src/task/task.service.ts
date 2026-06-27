@@ -24,9 +24,10 @@ export class TaskService {
   }
 
   async getLast(createdBy: number): Promise<Task[]> {
-    return await this.taskRepository.createQueryBuilder('tasks')
-      .where("tasks.created_by = :id", { id: createdBy })
-      .orderBy('tasks.updated_at','DESC')
+    return await this.taskRepository
+      .createQueryBuilder('tasks')
+      .where('tasks.created_by = :id', { id: createdBy })
+      .orderBy('tasks.updated_at', 'DESC')
       .limit(10)
       .getMany();
   }

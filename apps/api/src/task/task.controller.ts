@@ -46,7 +46,6 @@ export class TaskController {
     return await this.taskService.update(+id, updateTaskDto);
   }
 
-
   @Get('last')
   async GetLast(@ActiveUser('sub') userId: number): Promise<any> {
     return await this.taskService.getLast(userId);
@@ -55,11 +54,11 @@ export class TaskController {
   @Get(':id')
   async findOne(
     @Param(
-      'id', 
+      'id',
       new ParseIntPipe({
         exceptionFactory: () => new NotFoundException('Task not found'),
       }),
-    ) 
+    )
     id: number,
     @ActiveUser('sub') userId: number,
   ): Promise<Task> {

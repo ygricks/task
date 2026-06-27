@@ -1,6 +1,8 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+import './MainLayout.css';
+
 export const MainLayout = () => {
   const { user, isLoading } = useAuth();
 
