@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,6 +21,18 @@ export class TaskService {
       throw new NotFoundException('Task not found');
     }
     return Promise.resolve(task);
+  }
+
+  async getLast(createdBy: number): Promise<Task[]> {
+    return await this.taskRepository.createQueryBuilder('tasks')
+      .where("tasks.created_by = :id", { id: createdBy })
+      .orderBy('tasks.updated_at','DESC')
+      .limit(10)
+      .getMany();
+  }
+
+  async findAll(createdBy: number): Promise<Task[]> {
+    return await this.taskRepository.findBy({ createdBy });
   }
 
   async update(id: number, dto: UpdateTaskDto): Promise<Task> {

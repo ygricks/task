@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { compareSync, hashSync } from 'bcrypt';
+import { compareSync } from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

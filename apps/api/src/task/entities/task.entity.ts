@@ -1,4 +1,4 @@
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Entity,
   Column,
@@ -6,7 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { ITask } from '@my-project/types';
+import type { ITask } from '@my-project/types';
 
 @Entity('tasks')
 export class Task implements ITask {

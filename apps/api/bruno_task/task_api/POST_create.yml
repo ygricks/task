@@ -7,7 +7,7 @@ http:
   method: POST
   url: "{{HOST}}/task"
   headers:
-    - name: x-csrf-token
+    - name: "{{CSRF}}"
       value: "{{csrfToken}}"
   body:
     type: json
@@ -24,10 +24,12 @@ runtime:
       code: |-
         test("should return task nr.1", function () {
           expect(res.getStatus()).to.equal(201);
-          
           const body = res.getBody();
           expect(body).to.have.property("id");
-          bru.setEnvVar("TASK_ID", body.id);
+          const status = res.getStatus();
+          if(status == 201) {
+            bru.setVar("TASK_ID", body.id);
+          }
           expect(body.name).to.equal("test");
           expect(body.description).to.equal("test bruno post req");
         });

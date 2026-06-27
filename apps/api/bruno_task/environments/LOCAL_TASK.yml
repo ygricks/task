@@ -2,3 +2,5 @@ name: LOCAL_TASK
 variables:
   - name: HOST
     value: https://127.0.0.1:3000/api
+  - name: CSRF
+    value: x-csrf-token

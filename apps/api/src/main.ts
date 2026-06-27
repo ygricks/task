@@ -3,8 +3,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
-import cookieParser = require('cookie-parser');
 import { DOUBLE_CSRF_TOKEN } from './auth/constants';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const httpsOptions = {

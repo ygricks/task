@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
 import { IS_PUBLIC_KEY } from './public.decorator';
-import { IUserPayload } from './IUserPayload';
+import { IUserPayload } from '@my-project/types';
+import { IRequestWithJwt } from './auth.type';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const request: IRequestWithJwt = context.switchToHttp().getRequest();
     const token = this.extractTokenFromCookie(request);
     if (!token) {
       throw new UnauthorizedException();
@@ -40,7 +40,7 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
-  private extractTokenFromCookie(request: Request): string | undefined {
-    return request.cookies?.jwt;
+  private extractTokenFromCookie(request: IRequestWithJwt): string {
+    return request.cookies?.jwt || '';
   }
 }

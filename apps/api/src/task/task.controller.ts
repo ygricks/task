@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   ForbiddenException,
+  ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { ActiveUser } from 'src/auth/activeUser.decorator';
+import { ActiveUser } from '../auth/activeUser.decorator';
 import { Task } from './entities/task.entity';
 
 @Controller('task')
@@ -44,16 +46,33 @@ export class TaskController {
     return await this.taskService.update(+id, updateTaskDto);
   }
 
+
+  @Get('last')
+  async GetLast(@ActiveUser('sub') userId: number): Promise<any> {
+    return await this.taskService.getLast(userId);
+  }
+
   @Get(':id')
   async findOne(
-    @Param('id') id: string,
+    @Param(
+      'id', 
+      new ParseIntPipe({
+        exceptionFactory: () => new NotFoundException('Task not found'),
+      }),
+    ) 
+    id: number,
     @ActiveUser('sub') userId: number,
   ): Promise<Task> {
-    const task = await this.taskService.findOne(+id);
+    const task = await this.taskService.findOne(id);
     if (task.createdBy !== userId) {
       throw new ForbiddenException();
     }
     return task;
+  }
+
+  @Get()
+  async findAll(@ActiveUser('sub') userId: number): Promise<any> {
+    return await this.taskService.findAll(userId);
   }
 
   @Delete(':id')

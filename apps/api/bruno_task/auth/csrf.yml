@@ -6,17 +6,22 @@ info:
 http:
   method: GET
   url: "{{HOST}}/auth/csrf-token"
-  headers:
-    - name: x-csrf-token
-      value: "{{csrfToken}}"
   auth: inherit
 
 runtime:
   scripts:
     - type: after-response
       code: |-
-        const data = res.getBody();
-        bru.setVar("csrfToken", data.token);
+        const HOST = bru.getEnvVar("HOST");
+
+        const jar = bru.cookies.jar();
+        const xsrf = await jar.getCookie(HOST, "XSRF-TOKEN");
+
+        const status = res.getStatus();
+
+        if(status == 200 && xsrf) {
+          bru.setVar("csrfToken", xsrf.value);
+        }
 
 settings:
   encodeUrl: true

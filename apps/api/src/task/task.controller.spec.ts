@@ -7,6 +7,7 @@ const mockTask = { id: 1, title: 'Test Task', description: 'Test description' };
 describe('TaskController', () => {
   let controller: TaskController;
   let taskService: jest.Mocked<TaskService>;
+  const authorId = 1;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,7 +36,7 @@ describe('TaskController', () => {
   describe('create', () => {
     it('should create a task via taskService.create', async () => {
       const dto = { title: 'Test Task', description: 'Test description' };
-      const result = await controller.create(dto as any);
+      const result = await controller.create(dto as any, authorId);
 
       expect(result).toEqual(mockTask);
       expect(taskService.create).toHaveBeenCalledWith(dto);
@@ -44,7 +45,7 @@ describe('TaskController', () => {
 
   describe('findOne', () => {
     it('should return a task via taskService.findOne', async () => {
-      const result = await controller.findOne('1');
+      const result = await controller.findOne(1, authorId);
 
       expect(result).toEqual(mockTask);
       expect(taskService.findOne).toHaveBeenCalledWith(1);
@@ -54,7 +55,7 @@ describe('TaskController', () => {
   describe('update', () => {
     it('should return updated task via taskService.update', async () => {
       const dto = { title: 'Updated Task', description: 'Updated description' };
-      const result = await controller.update('1', dto as any);
+      const result = await controller.update('1', dto, authorId);
 
       expect(result).toEqual(mockTask);
       expect(taskService.update).toHaveBeenCalledWith(1, dto);
@@ -63,7 +64,7 @@ describe('TaskController', () => {
 
   describe('remove', () => {
     it('should call taskService.remove with numeric id', async () => {
-      const result = await controller.remove('1');
+      const result = await controller.remove('1', authorId);
 
       expect(result).toBeUndefined();
       expect(taskService.remove).toHaveBeenCalledWith(1);

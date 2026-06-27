@@ -7,7 +7,7 @@ http:
   method: POST
   url: "{{HOST}}/auth/login"
   headers:
-    - name: x-csrf-token
+    - name: "{{CSRF}}"
       value: "{{csrfToken}}"
   body:
     type: json
@@ -22,8 +22,16 @@ runtime:
   scripts:
     - type: after-response
       code: |-
-        const data = res.getBody();
-        bru.setVar("csrfToken", data.token);
+        const HOST = bru.getEnvVar("HOST");
+
+        const jar = bru.cookies.jar();
+        const xsrf = await jar.getCookie(HOST, "XSRF-TOKEN");
+
+        const status = res.getStatus();
+
+        if(status == 200 && xsrf) {
+          bru.setVar("csrfToken", xsrf.value);
+        }
 
 settings:
   encodeUrl: true

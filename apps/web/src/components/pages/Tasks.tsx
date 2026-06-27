@@ -1,36 +1,22 @@
+import type { ITask } from "@my-project/types"
+import { useEffect, useState } from "react";
+
 export const Tasks = () => {
-  return <div>
-    <ul>
-        <li>
-            <p>task 01</p>
-        </li>
-        <li>
-            <p>task 02</p>
-        </li>
-        <li>
-            <p>task 03</p>
-        </li>
-        <li>
-            <p>task 04</p>
-        </li>
-        <li>
-            <p>task 05</p>
-        </li>
-        <li>
-            <p>task 06</p>
-        </li>
-        <li>
-            <p>task 07</p>
-        </li>
-        <li>
-            <p>task 08</p>
-        </li>
-        <li>
-            <p>task 09</p>
-        </li>
-        <li>
-            <p>task 10</p>
-        </li>
-    </ul>
-  </div>
+    const [data, setData] = useState<ITask[]>([]);
+    const [loading, setLoading] = useState(true);
+
+
+    const fetchData = async ()=>{
+        let res = await fetch('/api/task');
+        let data = await res.json();
+        setData(data);
+        setLoading(false);
+    }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  return <p>{JSON.stringify(data)}</p>;
 }

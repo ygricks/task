@@ -41,7 +41,7 @@ describe('TaskService', () => {
     mockTaskRepository.create.mockReturnValue(createTaskDto as unknown as Task);
     mockTaskRepository.save.mockResolvedValue(expectedTask as unknown as Task);
 
-    const result = await service.create(createTaskDto as unknown as Task);
+    const result = await service.create(createTaskDto);
 
     expect(mockTaskRepository.create).toHaveBeenCalledWith(createTaskDto);
     expect(mockTaskRepository.save).toHaveBeenCalledWith(createTaskDto);

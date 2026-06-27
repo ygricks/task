@@ -8,6 +8,8 @@ import { AuthGuard } from './auth.guard';
 import { StringValue } from 'ms';
 import { doubleCsrf } from 'csrf-csrf';
 import { DOUBLE_CSRF_TOKEN } from './constants';
+import { CsrfCookieOptions } from './auth.cookieOptions';
+import { IRequestWithJwt } from './auth.type';
 
 @Global()
 @Module({
@@ -17,7 +19,7 @@ import { DOUBLE_CSRF_TOKEN } from './constants';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         global: true,
         secret: configService.getOrThrow<string>('JWT_SECRET'),
         signOptions: {
@@ -35,17 +37,13 @@ import { DOUBLE_CSRF_TOKEN } from './constants';
       useFactory: (configService: ConfigService) => {
         const csrfConfig = doubleCsrf({
           getSecret: () => configService.getOrThrow<string>('CSRF_SECRET'),
-          cookieName: 'ps-csrf',
-          cookieOptions: {
-            httpOnly: true,
-            sameSite: 'strict',
-            secure: true,
-            path: '/api',
-          },
+          cookieName: 'XSRF-TOKEN',
+          cookieOptions: CsrfCookieOptions,
           size: 64,
           ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
           getCsrfTokenFromRequest: (req) => req.headers['x-csrf-token'],
-          getSessionIdentifier: (req) => req.cookies?.jwt || '',
+          getSessionIdentifier: (req: IRequestWithJwt): string =>
+            req.cookies?.jwt || '',
         });
 
         return csrfConfig;
