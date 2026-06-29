@@ -23,13 +23,16 @@ export class TaskService {
     return Promise.resolve(task);
   }
 
-  async getLast(createdBy: number): Promise<Task[]> {
-    return await this.taskRepository
+  async getLast(createdBy: number, status: number | undefined): Promise<Task[]> {
+    const query = this.taskRepository
       .createQueryBuilder('tasks')
       .where('tasks.created_by = :id', { id: createdBy })
       .orderBy('tasks.updated_at', 'DESC')
-      .limit(10)
-      .getMany();
+      .limit(10);
+    if(status != undefined) {
+      query.where('tasks.status = :status', {status})
+    }
+    return await query.getMany();
   }
 
   async findAll(createdBy: number): Promise<Task[]> {

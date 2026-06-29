@@ -9,6 +9,7 @@ import {
   ForbiddenException,
   ParseIntPipe,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -47,8 +48,8 @@ export class TaskController {
   }
 
   @Get('last')
-  async GetLast(@ActiveUser('sub') userId: number): Promise<any> {
-    return await this.taskService.getLast(userId);
+  async GetLast(@ActiveUser('sub') userId: number, @Query('s') status:number|undefined): Promise<any> {
+    return await this.taskService.getLast(userId, status);
   }
 
   @Get(':id')
