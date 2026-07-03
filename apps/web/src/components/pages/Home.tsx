@@ -45,11 +45,11 @@ function TaskView({ task }: { task: ITask }) {
 export const Home = () => {
   const [data, setData] = useState<ITask[]>([]);
   const [loading, setLoading] = useState(true);
-  const [pageOption, setPageOption] = useState(TaskStatus.PENDING);
+  const [selectedStatus, setSelectedStatus] = useState(TaskStatus.PENDING);
 
   const handleStatusChange = (event: {target: {value: string}}) => {
     const status = parseInt(event.target.value, 10);
-    setPageOption(status);
+    setSelectedStatus(status);
     setLoading(true);
     loadTasks(status);
   };
@@ -62,13 +62,13 @@ export const Home = () => {
   }
 
   useEffect(() => {
-    loadTasks(pageOption);
-  }, []);
+    loadTasks(selectedStatus);
+  }, [selectedStatus]);
 
   if (loading) return <p>Loading...</p>;
   return <div className="homePage">
     <p>The list of Tasks:</p>
-    <select name="taskStatus" value={pageOption} onChange={handleStatusChange}>
+    <select name="taskStatus" value={selectedStatus} onChange={handleStatusChange}>
       {taskStatusOptions.map(option => (
         <option key={option.value} value={option.value}>
           {option.label}

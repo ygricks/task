@@ -1,5 +1,6 @@
 import type { ITask } from "@my-project/types"
 import { useEffect, useState } from "react";
+import { api } from "../../api";
 
 export const Tasks = () => {
     const [data, setData] = useState<ITask[]>([]);
@@ -7,9 +8,8 @@ export const Tasks = () => {
 
 
     const fetchData = async ()=>{
-        let res = await fetch('/api/task');
-        let data = await res.json();
-        setData(data);
+        let data = await api.get('/task');
+        setData(data.data);
         setLoading(false);
     }
 
